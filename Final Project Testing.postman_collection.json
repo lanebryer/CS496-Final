@@ -1,0 +1,1326 @@
+{
+	"info": {
+		"_postman_id": "fd50ec76-6096-4eec-8553-bf01b1211563",
+		"name": "Final Project Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET nonexisting account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "64d53a21-3451-4006-96ac-606bd8690bd2",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Get account that doesn't exist returns 403\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"lanebryer@gmail.com\",\n\t\"firstName\": \"Lane\",\n\t\"lastName\": \"Bryer\",\n\t\"age\": 28\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "POST account 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6f73d8d1-a9e5-4913-9d9f-c3c61c138be6",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"pm.environment.set(\"account1\", response.id);",
+							"pm.environment.set(\"account1email\", response.email);",
+							"tests[\"Account created successfully\"] = response.id !== null;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"lanebryer@gmail.com\",\n\t\"firstName\": \"Lane\",\n\t\"lastName\": \"Bryer\",\n\t\"age\": 28\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "POST account missing info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ba7e65cf-ab1c-4f0f-b665-2efe08148731",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Test POST account with missing information\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer  {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"age\": 28\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "POST account with todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b47a679b-49a9-4204-b209-9eeb79d485ca",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Post account with todo items fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"lanebryer@gmail.com\",\n\t\"firstName\": \"Lane\",\n\t\"lastName\": \"Bryer\",\n\t\"age\": 28,\n\t\"todos\": []\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "POST account with existing email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a1ccf216-0ce4-48c2-b632-e2b59eb44476",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Post account with email that already exists fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"lanebryer@gmail.com\",\n\t\"firstName\": \"Lane\",\n\t\"lastName\": \"Bryer\",\n\t\"age\": 28\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "POST account with email that doesn't match auth credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea096b81-aa4f-4994-8287-1403b13cc5a3",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Email doesn't match auth credentials fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"bryerl@oregonstate.edu\",\n\t\"firstName\": \"Lane\",\n\t\"lastName\": \"Bryer\",\n\t\"age\": 28\n\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "POST todo with no valid account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3c565d74-4ff0-4c18-b262-68b77f9e1e77",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"POST todo with no valid account fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Random text\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo"
+			},
+			"response": []
+		},
+		{
+			"name": "POST account 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "934f557e-de0c-40f4-8ef3-3b81c815f70d",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"pm.environment.set(\"account2\", response.id)",
+							"pm.environment.set(\"account2email\", response.email)",
+							"tests[\"Account created successfully\"] = response.id !== null"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"bryerl@oregonstate.edu\",\n\t\"firstName\": \"Lane\",\n\t\"lastName\": \"Bryer\",\n\t\"age\": 28\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "GET account 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5e717950-52b4-4031-a4e4-fcd8bf685f15",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"tests[\"Correct account is returned\"] = response.email === pm.environment.get(\"account1email\")"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					}
+				],
+				"body": {},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH account 1 with bad ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "95ed4bba-3687-4bed-9dbf-60c189bbbe03",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"PATCH account 1 with bad id input fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"James\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account/randombadid"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH account 1 with read-only values",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "839e784d-f3ba-416d-b84e-6dff8f29d2cd",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"PATCH account 1 with read-only values fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"James\",\n\t\"email\": \"newemail@gmail.com\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account/{{account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH account 2 with bad credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7e69e931-a43c-4b71-b210-bd5547c58603",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"PATCH account 2 with bad credentials fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"James\",\n\t\"email\": \"newemail@gmail.com\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account/{{account2}}"
+			},
+			"response": []
+		},
+		{
+			"name": "POST todo with read-only values",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dce78c16-8893-4077-9108-3cdf75590adb",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"POST todo with read-only values fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"owner\": \"lanebryer@gmail.com\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo"
+			},
+			"response": []
+		},
+		{
+			"name": "POST todo 1 to account 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1f981a8e-3c76-4a38-8c4f-38b1fdc50584",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"pm.environment.set(\"todo1account1\", response.id)",
+							"tests[\"Todo 1 posted successfully to account 1\"] = response.id !== null",
+							"tests[\"Verify that owner is account 1\"] = response.owner === pm.environment.get(\"account1email\")",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 1 todo 1\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo"
+			},
+			"response": []
+		},
+		{
+			"name": "POST todo 2 to account 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9ccf0ffe-ef94-4cdc-bc10-cf91255a2de0",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"pm.environment.set(\"todo2account1\", response.id)",
+							"tests[\"Todo 1 posted successfully to account 1\"] = response.id !== null",
+							"tests[\"Verify that owner is account 1\"] = response.owner === pm.environment.get(\"account1email\")",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 1 todo 2\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify account 1 has 2 todo keys",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "42450e29-ae24-4992-af8f-2a71ca8d068e",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"tests[\"Account 1 has 2 todo keys in its todos KeyProperty\"] = response.todos.length === 2",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 1 todo 2\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/account"
+			},
+			"response": []
+		},
+		{
+			"name": "GET todo from account 2 with no todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c9c5522b-8c34-4c23-9be1-8f689302f912",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"GET todo from account 2 with no todos returns empty todos message\"] = responseBody === \"You currently have no todo items\"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/todo"
+			},
+			"response": []
+		},
+		{
+			"name": "POST todo 1 to account 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7014f6f5-1e68-4a31-9a91-d319910a5b4f",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"pm.environment.set(\"todo1account2\", response.id)",
+							"tests[\"Todo 1 posted successfully to account 2\"] = response.id !== null",
+							"tests[\"Verify that owner is account 2\"] = response.owner === pm.environment.get(\"account2email\")",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 2 todo 1\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo"
+			},
+			"response": []
+		},
+		{
+			"name": "GET todo belong to another account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e708b8fd-cbc2-4d89-9074-5c18e56568e3",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"GET account 1 todo as account 2 fails due to ownership violation\"] = responseCode.code === 403",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 2 todo 1\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo1account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GET account 1 todo 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f1a7071c-24c9-45b1-b01e-8cf5c8553f5b",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"tests[\"GET account 1 todo successfully\"] = response.id === pm.environment.get(\"todo1account1\")"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 2 todo 1\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo1account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GET account 1 todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8b51d403-f5b1-4fdf-adfe-921345342c3c",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"tests[\"GET account 1 todos returns both created todos\"] = response[\"Results\"].length === 2"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 2 todo 1\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH todo with read-only values",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f0343250-5a4c-410a-b264-6857494fff1d",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"PATCH todo with read-only values fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 2 todo 1 updated\",\n\t\"owner\": \"jamessmith@gmail.com\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo1account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH todo with bad id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a337b894-0966-4143-bb3a-224ce86eb228",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"PATCH todo with bad id fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 2 todo 1\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo/randombadid"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH another account's todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3691c1e8-ec06-4530-8346-3a735a111dfc",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"PATCH todo belonging to another account fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"Account 2 todo 1\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo1account2}}"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH account 1 todo 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2a2d334e-5936-4fa0-80e4-e4fead568def",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"",
+							"tests[\"PATCH todo 1 account 1 successful\"] = response.body === \"UPDATED\""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"body\": \"UPDATED\",\n\t\"dateToDo\": \"08/24/2018\"\n}"
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo1account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE todo with bad id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b10f8dd0-7900-44f9-9a8b-8fa9e9dba28f",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Delete todo with bad id fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/todo/randombadid"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE todo from another account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "226ea0f5-b024-48c7-a977-22a725ad0240",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Delete todo belong to another account fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo1account2}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE todo 2 from account 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "23060ee2-3ba4-45b2-9e6c-eb45d43b038b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo2account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GET todo to prove deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6323a69a-3c38-41cf-a850-b68fc3d7b018",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Todo no longer exists\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo2account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "GET account 1 to show todo key no longer exists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c493d226-ba0e-4ca7-8dd3-3a0d6a38b985",
+						"type": "text/javascript",
+						"exec": [
+							"var response = JSON.parse(responseBody)",
+							"tests[\"Account 1 now only has 1 todo item key\"] = response.todos.length === 1"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/account/{{account1}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE account with bad id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ffad5706-99ca-4bdf-b0e2-f0441fca8876",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Deleting account with bad id input fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/account/randombadid"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE another user's account fails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "58891528-937e-4f22-8714-e9f248e32ccc",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Deleting another user's account fails\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/account/{{account2}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE account 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1648be5d-6bf8-4981-9e63-2a6702331650",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/account/{{account2}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Show that account 2 todo is deleted as well",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "53349bae-8086-4e47-af04-4010a686dc52",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Todo associated with account 2 is deleted when account 2 is deleted\"] = responseCode.code === 403"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user2Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/todo/{{todo1account2}}"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE account 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1648be5d-6bf8-4981-9e63-2a6702331650",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{user1Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "https://bryerl-final.appspot.com/account/{{account1}}"
+			},
+			"response": []
+		}
+	]
+}

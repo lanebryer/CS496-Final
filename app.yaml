@@ -1,0 +1,11 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:  
+- url: /proveLogin
+  script: app.app
+  
+- url: /.*
+  script: app.app
+
